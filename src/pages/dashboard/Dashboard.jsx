@@ -99,7 +99,7 @@ const Dashboard = () => {
       <div className="container">
         <div className="dashboard__header">
           <div>
-            <h1>대시보드</h1>
+            <h1>호텔명</h1>
             <p>안녕하세요, {user?.name || '사업자'}님</p>
           </div>
         </div>
