@@ -21,12 +21,6 @@ const Statistics = () => {
     },
   })
 
-  const [topHotels] = useState([
-    { name: '그랜드 서울 호텔', bookings: 856, revenue: 342400000 },
-    { name: '제주 리조트', bookings: 742, revenue: 296800000 },
-    { name: '부산 비치 호텔', bookings: 658, revenue: 263200000 },
-  ])
-
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('ko-KR', {
       style: 'currency',
@@ -100,35 +94,6 @@ const Statistics = () => {
             </div>
           </Card>
         </div>
-
-        <Card title="호텔별 매출 순위">
-          <div className="ranking-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>순위</th>
-                  <th>호텔명</th>
-                  <th>예약 수</th>
-                  <th>총 매출</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topHotels.map((hotel, index) => (
-                  <tr key={index}>
-                    <td className="rank">
-                      <span className={`rank-badge rank-badge--${index + 1}`}>
-                        {index + 1}
-                      </span>
-                    </td>
-                    <td>{hotel.name}</td>
-                    <td>{hotel.bookings}건</td>
-                    <td>{formatCurrency(hotel.revenue)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
       </div>
     </div>
   )
