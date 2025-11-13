@@ -7,7 +7,6 @@ const ReviewManagement = () => {
   const [reviews] = useState([
     {
       id: 1,
-      hotelName: '그랜드 서울 호텔',
       guestName: '김철수',
       rating: 5,
       comment: '정말 좋은 호텔이었습니다. 서비스도 훌륭하고 시설도 깨끗했어요.',
@@ -16,7 +15,6 @@ const ReviewManagement = () => {
     },
     {
       id: 2,
-      hotelName: '제주 리조트',
       guestName: '이영희',
       rating: 4,
       comment: '뷰가 정말 아름답고 조용해서 휴식하기 좋았습니다.',
@@ -25,7 +23,6 @@ const ReviewManagement = () => {
     },
     {
       id: 3,
-      hotelName: '부산 비치 호텔',
       guestName: '박민수',
       rating: 2,
       comment: '청결 상태가 좋지 않았고 직원들의 서비스도 아쉬웠습니다.',
@@ -66,12 +63,9 @@ const ReviewManagement = () => {
             {reviews.map((review) => (
               <div key={review.id} className="review-item">
                 <div className="review-item__header">
-                  <div>
-                    <h4>{review.hotelName}</h4>
-                    <p className="review-item__author">
-                      {review.guestName} · {review.date}
-                    </p>
-                  </div>
+                  <p className="review-item__author">
+                    {review.guestName} · {review.date}
+                  </p>
                   <span className={getStatusClass(review.status)}>
                     {getStatusText(review.status)}
                   </span>
