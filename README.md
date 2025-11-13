@@ -60,7 +60,7 @@ npm install
 npm run dev
 ```
 
-브라우저에서 `http://localhost:3000` 접속
+브라우저에서 `http://localhost:5173` 접속
 
 개발 모드에서는:
 - 자동으로 **테스트 사업자** 계정으로 로그인됩니다
