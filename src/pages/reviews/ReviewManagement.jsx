@@ -8,6 +8,7 @@ const ReviewManagement = () => {
     {
       id: 1,
       guestName: '김철수',
+      roomType: '디럭스 룸',
       rating: 5,
       comment: '정말 좋은 호텔이었습니다. 서비스도 훌륭하고 시설도 깨끗했어요.',
       date: '2025-11-10',
@@ -16,6 +17,7 @@ const ReviewManagement = () => {
     {
       id: 2,
       guestName: '이영희',
+      roomType: '오션뷰 스위트',
       rating: 4,
       comment: '뷰가 정말 아름답고 조용해서 휴식하기 좋았습니다.',
       date: '2025-11-09',
@@ -24,6 +26,7 @@ const ReviewManagement = () => {
     {
       id: 3,
       guestName: '박민수',
+      roomType: '스탠다드 룸',
       rating: 2,
       comment: '청결 상태가 좋지 않았고 직원들의 서비스도 아쉬웠습니다.',
       date: '2025-11-08',
@@ -64,7 +67,7 @@ const ReviewManagement = () => {
               <div key={review.id} className="review-item">
                 <div className="review-item__header">
                   <p className="review-item__author">
-                    {review.guestName} · {review.date}
+                    {review.guestName} · {review.roomType} · {review.date}
                   </p>
                   <span className={getStatusClass(review.status)}>
                     {getStatusText(review.status)}
