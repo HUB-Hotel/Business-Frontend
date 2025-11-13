@@ -106,7 +106,12 @@ const Dashboard = () => {
 
         <div className="dashboard__stats">
           <Card className="stat-card">
-            <div className="stat-card__icon stat-card__icon--room"></div>
+            <div className="stat-card__icon stat-card__icon--room">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9 22V12H15V22" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div className="stat-card__content">
               <p className="stat-card__label">총 객실</p>
               <h2 className="stat-card__value">{stats.totalRooms}</h2>
@@ -114,7 +119,14 @@ const Dashboard = () => {
           </Card>
 
           <Card className="stat-card">
-            <div className="stat-card__icon stat-card__icon--booking"></div>
+            <div className="stat-card__icon stat-card__icon--booking">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M16 2V6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8 2V6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M3 10H21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div className="stat-card__content">
               <p className="stat-card__label">총 예약</p>
               <h2 className="stat-card__value">{stats.totalBookings}</h2>
@@ -122,7 +134,13 @@ const Dashboard = () => {
           </Card>
 
           <Card className="stat-card">
-            <div className="stat-card__icon stat-card__icon--revenue"></div>
+            <div className="stat-card__icon stat-card__icon--revenue">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 6V18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M15 9H10.5C10.1022 9 9.72064 9.15804 9.43934 9.43934C9.15804 9.72064 9 10.1022 9 10.5C9 10.8978 9.15804 11.2794 9.43934 11.5607C9.72064 11.842 10.1022 12 10.5 12H13.5C13.8978 12 14.2794 12.158 14.5607 12.4393C14.842 12.7206 15 13.1022 15 13.5C15 13.8978 14.842 14.2794 14.5607 14.5607C14.2794 14.842 13.8978 15 13.5 15H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div className="stat-card__content">
               <p className="stat-card__label">총 매출</p>
               <h2 className="stat-card__value">
