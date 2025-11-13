@@ -65,7 +65,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    background-color: $text-primary;
+    background-color: $primary;
 
     svg {
       width: 32px;
@@ -73,19 +73,19 @@
     }
 
     &--hotel {
-      background-color: $text-primary;
+      background-color: $primary;
     }
 
     &--room {
-      background-color: $text-primary;
+      background-color: $primary;
     }
 
     &--booking {
-      background-color: $text-primary;
+      background-color: $primary;
     }
 
     &--revenue {
-      background-color: $text-primary;
+      background-color: $primary;
     }
   }
 
