@@ -1,0 +1,91 @@
+@import '../../styles/variables';
+
+.footer {
+  background-color: $primary-light;
+  margin-top: auto;
+  padding: $spacing-xxl 0 $spacing-lg;
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-xl;
+    margin-bottom: $spacing-xl;
+
+    @media (max-width: $breakpoint-tablet) {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__description {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    line-height: $line-height-relaxed;
+  }
+
+  &__heading {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    li {
+      font-size: $font-size-sm;
+      color: $text-secondary;
+    }
+
+    a {
+      color: $text-secondary;
+      transition: color $transition-fast;
+
+      &:hover {
+        color: $primary-dark;
+      }
+    }
+  }
+
+  &__social {
+    display: flex;
+    gap: $spacing-md;
+
+    a {
+      font-size: $font-size-sm;
+      color: $text-secondary;
+      transition: color $transition-fast;
+
+      &:hover {
+        color: $primary-dark;
+      }
+    }
+  }
+
+  &__bottom {
+    padding-top: $spacing-lg;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    p {
+      font-size: $font-size-xs;
+      color: $text-secondary;
+    }
+  }
+}
