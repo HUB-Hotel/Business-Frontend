@@ -1,0 +1,162 @@
+// Mock 사업자 정보
+export const mockBusinessUser = {
+  id: "business-1",
+  name: "테스트 사업자",
+  email: "business@hotel.com",
+  phone: "010-1234-5678",
+  businessNumber: "123-45-67890",
+  createdAt: "2024-01-15",
+};
+
+// Mock 호텔 정보 (사업자당 1개)
+export const mockHotel = {
+  id: "hotel-1",
+  name: "그랜드 서울 호텔",
+  description: "서울 중심부에 위치한 럭셔리 비즈니스 호텔입니다. 최고급 서비스와 편의시설을 제공합니다.",
+  address: "서울시 강남구 테헤란로 123",
+  city: "서울",
+  country: "South Korea",
+  phone: "02-1234-5678",
+  email: "info@grandseoul.com",
+  website: "https://grandseoul.com",
+  checkInTime: "15:00",
+  checkOutTime: "11:00",
+  images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"],
+  totalRooms: 45,
+  totalBookings: 128,
+  totalRevenue: 45680000,
+  avgRating: 4.5,
+};
+
+// Mock 객실 목록
+export const mockRooms = [
+  {
+    id: "room-1",
+    name: "디럭스 룸",
+    type: "deluxe",
+    price: 180000,
+    maxGuests: 2,
+    amenities: ["WiFi", "TV", "에어컨", "미니바"],
+    description: "편안한 디럭스 룸입니다.",
+    images: ["https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800"],
+    available: true,
+    quantity: 15,
+  },
+  {
+    id: "room-2",
+    name: "오션뷰 스위트",
+    type: "suite",
+    price: 350000,
+    maxGuests: 4,
+    amenities: ["WiFi", "TV", "에어컨", "미니바", "욕조", "발코니"],
+    description: "아름다운 전망의 스위트 룸입니다.",
+    images: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800"],
+    available: true,
+    quantity: 10,
+  },
+  {
+    id: "room-3",
+    name: "스탠다드 룸",
+    type: "standard",
+    price: 120000,
+    maxGuests: 2,
+    amenities: ["WiFi", "TV", "에어컨"],
+    description: "기본적인 편의시설을 갖춘 스탠다드 룸입니다.",
+    images: ["https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800"],
+    available: true,
+    quantity: 20,
+  },
+];
+
+// Mock 예약 목록
+export const mockBookings = [
+  {
+    id: "booking-1",
+    roomType: "디럭스 룸",
+    guestName: "김철수",
+    guestEmail: "kim@email.com",
+    guestPhone: "010-1111-2222",
+    checkIn: "2025-11-15",
+    checkOut: "2025-11-17",
+    guests: 2,
+    amount: 350000,
+    status: "confirmed",
+    createdAt: "2025-11-10",
+  },
+  {
+    id: "booking-2",
+    roomType: "오션뷰 스위트",
+    guestName: "이영희",
+    guestEmail: "lee@email.com",
+    guestPhone: "010-3333-4444",
+    checkIn: "2025-11-18",
+    checkOut: "2025-11-20",
+    guests: 3,
+    amount: 580000,
+    status: "pending",
+    createdAt: "2025-11-09",
+  },
+  {
+    id: "booking-3",
+    roomType: "스탠다드 룸",
+    guestName: "박민수",
+    guestEmail: "park@email.com",
+    guestPhone: "010-5555-6666",
+    checkIn: "2025-11-16",
+    checkOut: "2025-11-18",
+    guests: 2,
+    amount: 280000,
+    status: "confirmed",
+    createdAt: "2025-11-08",
+  },
+];
+
+// Mock 리뷰 목록
+export const mockReviews = [
+  {
+    id: "review-1",
+    guestName: "김철수",
+    roomType: "디럭스 룸",
+    rating: 5,
+    comment: "정말 좋은 호텔이었습니다. 서비스도 훌륭하고 시설도 깨끗했어요.",
+    date: "2025-11-10",
+    status: "approved",
+  },
+  {
+    id: "review-2",
+    guestName: "이영희",
+    roomType: "오션뷰 스위트",
+    rating: 4,
+    comment: "뷰가 정말 아름답고 조용해서 휴식하기 좋았습니다.",
+    date: "2025-11-09",
+    status: "approved",
+  },
+  {
+    id: "review-3",
+    guestName: "박민수",
+    roomType: "스탠다드 룸",
+    rating: 2,
+    comment: "청결 상태가 좋지 않았고 직원들의 서비스도 아쉬웠습니다.",
+    date: "2025-11-08",
+    status: "reported",
+  },
+];
+
+// Mock 통계 데이터
+export const mockStats = {
+  today: {
+    bookings: 12,
+    revenue: 4560000,
+    cancellations: 2,
+  },
+  thisMonth: {
+    bookings: 234,
+    revenue: 78920000,
+    cancellations: 15,
+  },
+  thisYear: {
+    bookings: 2456,
+    revenue: 892340000,
+    cancellations: 124,
+  },
+};

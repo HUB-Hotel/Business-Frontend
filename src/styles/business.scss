@@ -1,0 +1,313 @@
+@use "./variables.scss" as *;
+
+// 사업자 레이아웃
+.business-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.business-header {
+  background: $bg-primary;
+  border-bottom: 1px solid $border-color;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: $shadow-sm;
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-lg 0;
+  }
+
+  &__logo {
+    h1 {
+      font-size: $font-size-2xl;
+      font-weight: 700;
+      color: $text-primary;
+    }
+
+    &:hover h1 {
+      color: $primary-color;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__nav-link {
+    padding: $spacing-sm $spacing-md;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    border-radius: $border-radius;
+    transition: $transition-base;
+
+    &:hover {
+      color: $primary-color;
+      background-color: $bg-secondary;
+    }
+
+    &.active {
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $primary-color;
+    color: $text-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: $font-size-lg;
+  }
+
+  &__user-name {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-primary;
+  }
+
+  &__logout {
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-secondary;
+    background-color: transparent;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: $transition-base;
+
+    &:hover {
+      color: $danger-color;
+      border-color: $danger-color;
+      background-color: rgba(239, 68, 68, 0.05);
+    }
+  }
+}
+
+.business-content {
+  flex: 1;
+  padding: $spacing-xl 0;
+}
+
+.business-footer {
+  background: $bg-dark;
+  color: $text-white;
+  padding: $spacing-xl 0 $spacing-md;
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__section {
+    flex: 1;
+    min-width: 200px;
+
+    h4 {
+      font-size: $font-size-base;
+      font-weight: 600;
+      margin-bottom: $spacing-md;
+    }
+
+    a {
+      display: block;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: $font-size-sm;
+      margin-bottom: $spacing-sm;
+      transition: $transition-base;
+
+      &:hover {
+        color: $text-white;
+      }
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: $font-size-sm;
+      line-height: 1.5;
+    }
+  }
+
+  &__bottom {
+    padding-top: $spacing-md;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+
+    p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+// 대시보드
+.dashboard {
+  &__header {
+    margin-bottom: $spacing-xl;
+
+    h1 {
+      font-size: $font-size-2xl;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: $spacing-xs;
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: $font-size-base;
+    }
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+    margin-top: $spacing-xl;
+  }
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+
+  &__icon {
+    width: 60px;
+    height: 60px;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $primary-color;
+    flex-shrink: 0;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__value {
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    color: $text-primary;
+  }
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  h3 {
+    font-size: $font-size-lg;
+    color: $text-primary;
+  }
+
+  p {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    flex: 1;
+  }
+}
+
+// 로그인/회원가입 페이지
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-secondary;
+  padding: $spacing-lg;
+
+  &__container {
+    background: $bg-primary;
+    border-radius: $border-radius;
+    box-shadow: $shadow-lg;
+    padding: $spacing-2xl;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+
+    h1 {
+      font-size: $font-size-2xl;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: $spacing-sm;
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    margin-top: $spacing-lg;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-color;
+
+    p {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+    }
+
+    a {
+      color: $primary-color;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
