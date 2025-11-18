@@ -15,7 +15,7 @@ export const businessBookingApi = {
   },
 
   updateBookingStatus: async (id, status) => {
-    if (USE_MOCK) return mockBookingApi.updateStatus(id, status);
+    if (USE_MOCK) return mockBookingApi.updateBookingStatus(id, status);
     return axiosClient.patch(`/business/bookings/${id}/status`, { status });
   },
 

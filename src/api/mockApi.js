@@ -141,10 +141,39 @@ export const mockRoomApi = {
 export const mockBookingApi = {
   getBookings: async (params = {}) => {
     await delay();
+    let filtered = [...mockBookings];
+
+    if (params.status) {
+      filtered = filtered.filter((booking) => booking.status === params.status);
+    }
+
+    if (params.search) {
+      const keyword = params.search.toLowerCase();
+      filtered = filtered.filter(
+        (booking) =>
+          booking.id.toLowerCase().includes(keyword) ||
+          booking.guestName.toLowerCase().includes(keyword) ||
+          booking.hotelName?.toLowerCase().includes(keyword)
+      );
+    }
+
+    if (params.startDate) {
+      filtered = filtered.filter((booking) => booking.checkIn >= params.startDate);
+    }
+
+    if (params.endDate) {
+      filtered = filtered.filter((booking) => booking.checkOut <= params.endDate);
+    }
+
+    const page = Number(params.page) || 1;
+    const pageSize = Number(params.pageSize) || 10;
+    const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+    const startIndex = (page - 1) * pageSize;
+
     return createResponse({
-      bookings: mockBookings,
-      totalPages: 1,
-      currentPage: 1,
+      bookings: filtered.slice(startIndex, startIndex + pageSize),
+      totalPages,
+      currentPage: page,
     });
   },
 
@@ -156,11 +185,20 @@ export const mockBookingApi = {
 
   updateBookingStatus: async (bookingId, status) => {
     await delay();
-    return createResponse({ message: "Status updated" });
+    const booking = mockBookings.find((b) => b.id === bookingId);
+    if (booking) {
+      booking.status = status;
+    }
+    return createResponse({ id: bookingId, status });
   },
 
   cancelBooking: async (bookingId, reason) => {
     await delay();
+    const booking = mockBookings.find((b) => b.id === bookingId);
+    if (booking) {
+      booking.status = "cancelled";
+      booking.cancelReason = reason || "관리자 취소";
+    }
     return createResponse({ message: "Booking cancelled" });
   },
 };

@@ -1,45 +1,64 @@
-const BusinessBookingFilter = ({ filters, onFilterChange }) => {
+const BusinessBookingFilter = ({ values, onChange, onSearch, onReset }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch?.();
+  };
+
   return (
-    <div className="filter-bar">
+    <form className="filter-bar booking-filter" onSubmit={handleSubmit}>
+      <div className="filter-group grow">
+        <label>검색</label>
+        <input
+          type="text"
+          placeholder="예약번호 또는 고객명"
+          value={values.search || ""}
+          onChange={(e) => onChange("search", e.target.value)}
+        />
+      </div>
+
       <div className="filter-group">
         <label>상태</label>
         <select
-          value={filters.status || ""}
-          onChange={(e) => onFilterChange("status", e.target.value)}
+          value={values.status || ""}
+          onChange={(e) => onChange("status", e.target.value)}
         >
           <option value="">전체</option>
-          <option value="pending">대기</option>
           <option value="confirmed">확정</option>
-          <option value="cancelled">취소</option>
+          <option value="pending">대기</option>
           <option value="completed">완료</option>
+          <option value="cancelled">취소</option>
         </select>
       </div>
 
       <div className="filter-group">
-        <label>기간</label>
+        <label>시작일</label>
         <input
           type="date"
-          value={filters.startDate || ""}
-          onChange={(e) => onFilterChange("startDate", e.target.value)}
-        />
-        <span>~</span>
-        <input
-          type="date"
-          value={filters.endDate || ""}
-          onChange={(e) => onFilterChange("endDate", e.target.value)}
+          placeholder="연도-월-일"
+          value={values.startDate || ""}
+          onChange={(e) => onChange("startDate", e.target.value)}
         />
       </div>
 
       <div className="filter-group">
-        <label>검색</label>
+        <label>종료일</label>
         <input
-          type="text"
-          placeholder="투숙객명 검색"
-          value={filters.search || ""}
-          onChange={(e) => onFilterChange("search", e.target.value)}
+          type="date"
+          placeholder="연도-월-일"
+          value={values.endDate || ""}
+          onChange={(e) => onChange("endDate", e.target.value)}
         />
       </div>
-    </div>
+
+      <div className="filter-actions">
+        <button type="submit" className="btn btn-primary">
+          검색
+        </button>
+        <button type="button" className="btn btn-outline" onClick={onReset}>
+          초기화
+        </button>
+      </div>
+    </form>
   );
 };
 

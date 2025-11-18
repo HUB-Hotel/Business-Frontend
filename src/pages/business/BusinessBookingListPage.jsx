@@ -11,7 +11,13 @@ const BusinessBookingListPage = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    search: "",
+    status: "",
+    startDate: "",
+    endDate: "",
+  });
+  const [filterInputs, setFilterInputs] = useState(filters);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -35,8 +41,19 @@ const BusinessBookingListPage = () => {
     }
   };
 
-  const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+  const handleFilterInputChange = (key, value) => {
+    setFilterInputs((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const applyFilters = () => {
+    setFilters(filterInputs);
+    setCurrentPage(1);
+  };
+
+  const resetFilters = () => {
+    const initial = { search: "", status: "", startDate: "", endDate: "" };
+    setFilterInputs(initial);
+    setFilters(initial);
     setCurrentPage(1);
   };
 
@@ -58,7 +75,12 @@ const BusinessBookingListPage = () => {
         <h1>예약 관리</h1>
       </div>
 
-      <BusinessBookingFilter filters={filters} onFilterChange={handleFilterChange} />
+      <BusinessBookingFilter
+        values={filterInputs}
+        onChange={handleFilterInputChange}
+        onSearch={applyFilters}
+        onReset={resetFilters}
+      />
 
       {bookings.length === 0 ? (
         <EmptyState message="예약 내역이 없습니다." />
