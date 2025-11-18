@@ -1,11 +1,24 @@
-import StatusBadge from "../../common/StatusBadge";
-
 const BusinessRecentTable = ({ bookings = [] }) => {
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("ko-KR", {
-      style: "currency",
-      currency: "KRW",
-    }).format(amount);
+    return "₩" + new Intl.NumberFormat("ko-KR").format(amount);
+  };
+
+  const getStatusText = (status) => {
+    const statusMap = {
+      confirmed: "예약 확정",
+      pending: "확인 대기",
+      cancelled: "취소됨",
+    };
+    return statusMap[status] || status;
+  };
+
+  const getStatusClass = (status) => {
+    const classMap = {
+      confirmed: "status-confirmed",
+      pending: "status-pending",
+      cancelled: "status-cancelled",
+    };
+    return classMap[status] || "";
   };
 
   return (
@@ -27,13 +40,15 @@ const BusinessRecentTable = ({ bookings = [] }) => {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.id}>
-                  <td>{booking.roomType}</td>
+                  <td className="text-primary">{booking.roomType}</td>
                   <td>{booking.guestName}</td>
                   <td>{booking.checkIn}</td>
                   <td>{booking.checkOut}</td>
                   <td>{formatCurrency(booking.amount)}</td>
                   <td>
-                    <StatusBadge status={booking.status} type="booking" />
+                    <span className={getStatusClass(booking.status)}>
+                      {getStatusText(booking.status)}
+                    </span>
                   </td>
                 </tr>
               ))}
