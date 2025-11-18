@@ -109,7 +109,7 @@
 
 .business-content {
   flex: 1;
-  padding: $spacing-xl;
+  padding: $spacing-2xl $spacing-2xl;
   background: $bg-secondary;
 }
 
@@ -230,10 +230,11 @@
   }
 }
 
-.business-content {
-  flex: 1;
-  padding: $spacing-xl 0;
-}
+// 기존 헤더 레이아웃용 (사용 안함)
+// .business-content {
+//   flex: 1;
+//   padding: $spacing-xl 0;
+// }
 
 .business-footer {
   background: $bg-dark;
