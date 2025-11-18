@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { mockStatsApi } from "../../api/mockApi";
+import { businessStatsApi } from "../../api/businessStatsApi";
+import BusinessStatsCards from "../../components/business/dashboard/BusinessStatsCards";
+import BusinessChartArea from "../../components/business/dashboard/BusinessChartArea";
+import BusinessRecentTable from "../../components/business/dashboard/BusinessRecentTable";
 import Loader from "../../components/common/Loader";
 import ErrorMessage from "../../components/common/ErrorMessage";
 
@@ -15,7 +18,7 @@ const BusinessDashboardPage = () => {
   const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const data = await mockStatsApi.getDashboardStats();
+      const data = await businessStatsApi.getDashboardStats();
       setStats(data);
     } catch (err) {
       setError(err.message || "데이터를 불러오는데 실패했습니다.");
@@ -24,151 +27,19 @@ const BusinessDashboardPage = () => {
     }
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("ko-KR", {
-      style: "currency",
-      currency: "KRW",
-    }).format(amount);
-  };
-
-  const getStatusText = (status) => {
-    const statusMap = {
-      confirmed: "예약 확정",
-      pending: "확인 대기",
-      cancelled: "취소됨",
-    };
-    return statusMap[status] || status;
-  };
-
-  const getBadgeClass = (status) => {
-    const badgeMap = {
-      confirmed: "badge-success",
-      pending: "badge-warning",
-      cancelled: "badge-danger",
-    };
-    return badgeMap[status] || "badge-secondary";
-  };
-
   if (loading) return <Loader fullScreen />;
   if (error) return <ErrorMessage message={error} onRetry={fetchDashboardStats} />;
-
-  const { hotel, recentBookings } = stats;
 
   return (
     <div className="business-dashboard-page">
       <div className="page-header">
         <h1>대시보드</h1>
-        <p>{hotel.name}</p>
+        <p>{stats?.hotel?.name}</p>
       </div>
 
-      <div className="stats-cards">
-        <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">총 객실</span>
-            <div className="stat-icon" style={{ background: "rgba(59, 130, 246, 0.1)", color: "#3B82F6" }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M9 22V12H15V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div className="stat-value">{hotel.totalRooms}</div>
-          <div className="stat-change positive">
-            <span>+2</span> 이번 달 추가
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">총 예약</span>
-            <div className="stat-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10B981" }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M16 2V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M8 2V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M3 10H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div className="stat-value">{hotel.totalBookings}</div>
-          <div className="stat-change positive">
-            <span>+12%</span> 전월 대비
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">총 매출</span>
-            <div className="stat-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "#F59E0B" }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M15 9H10.5C10.1022 9 9.72064 9.15804 9.43934 9.43934C9.15804 9.72064 9 10.1022 9 10.5C9 10.8978 9.15804 11.2794 9.43934 11.5607C9.72064 11.842 10.1022 12 10.5 12H13.5C13.8978 12 14.2794 12.158 14.5607 12.4393C14.842 12.7206 15 13.1022 15 13.5C15 13.8978 14.842 14.2794 14.5607 14.5607C14.2794 14.842 13.8978 15 13.5 15H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div className="stat-value">{formatCurrency(hotel.totalRevenue)}</div>
-          <div className="stat-change positive">
-            <span>+8%</span> 전월 대비
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">평균 평점</span>
-            <div className="stat-icon" style={{ background: "rgba(139, 92, 246, 0.1)", color: "#8B5CF6" }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div className="stat-value">4.5</div>
-          <div className="stat-change positive">
-            <span>+0.2</span> 전월 대비
-          </div>
-        </div>
-      </div>
-
-      <div className="chart-placeholder">
-        <p>차트 영역</p>
-        <p>매출 추이 그래프가 표시됩니다</p>
-      </div>
-
-      <div className="recent-section">
-        <h4>최근 예약</h4>
-        <div className="card">
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>객실 타입</th>
-                  <th>투숙객</th>
-                  <th>체크인</th>
-                  <th>체크아웃</th>
-                  <th>금액</th>
-                  <th>상태</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentBookings.map((booking) => (
-                  <tr key={booking.id}>
-                    <td>{booking.roomType}</td>
-                    <td>{booking.guestName}</td>
-                    <td>{booking.checkIn}</td>
-                    <td>{booking.checkOut}</td>
-                    <td>{formatCurrency(booking.amount)}</td>
-                    <td>
-                      <span className={`badge ${getBadgeClass(booking.status)}`}>
-                        {getStatusText(booking.status)}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <BusinessStatsCards stats={stats} />
+      <BusinessChartArea data={stats?.chartData} />
+      <BusinessRecentTable bookings={stats?.recentBookings || []} />
     </div>
   );
 };

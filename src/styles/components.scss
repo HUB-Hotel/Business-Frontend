@@ -1,0 +1,331 @@
+@use "./variables.scss" as *;
+
+// 로그인 페이지
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  .login-container {
+    background: $bg-primary;
+    padding: $spacing-2xl;
+    border-radius: $border-radius;
+    box-shadow: $shadow-lg;
+    width: 100%;
+    max-width: 400px;
+
+    h2 {
+      text-align: center;
+      margin-bottom: $spacing-xl;
+      color: $text-primary;
+    }
+
+    .sample-account-info {
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: $border-radius;
+      padding: $spacing-md;
+      margin-bottom: $spacing-xl;
+      font-size: $font-size-sm;
+
+      p {
+        margin: $spacing-xs 0;
+        color: $text-secondary;
+
+        &:first-child {
+          font-weight: 600;
+          color: $primary-color;
+          margin-bottom: $spacing-sm;
+        }
+      }
+    }
+
+    .success-message,
+    .error-message {
+      padding: $spacing-md;
+      border-radius: $border-radius;
+      margin-bottom: $spacing-md;
+      font-size: $font-size-sm;
+    }
+
+    .success-message {
+      background: rgba(16, 185, 129, 0.1);
+      color: $success-color;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      color: $danger-color;
+    }
+
+    form {
+      .form-group {
+        margin-bottom: $spacing-lg;
+
+        label {
+          display: block;
+          margin-bottom: $spacing-sm;
+          font-weight: 500;
+        }
+
+        input {
+          width: 100%;
+          padding: $spacing-sm $spacing-md;
+          border: 1px solid $border-color;
+          border-radius: $border-radius;
+          font-size: $font-size-sm;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+          }
+        }
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: $spacing-md;
+        font-size: $font-size-base;
+      }
+    }
+  }
+}
+
+// 빈 상태
+.empty-state {
+  text-align: center;
+  padding: $spacing-2xl;
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    color: $text-secondary;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+// 모달
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal-content {
+    background: $bg-primary;
+    padding: $spacing-xl;
+    border-radius: $border-radius;
+    max-width: 500px;
+    width: 90%;
+
+    h3 {
+      margin-bottom: $spacing-md;
+    }
+
+    p {
+      color: $text-secondary;
+      margin-bottom: $spacing-xl;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacing-sm;
+    }
+  }
+}
+
+// 디테일 섹션
+.detail-section {
+  .detail-row {
+    display: flex;
+    padding: $spacing-md 0;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      width: 150px;
+      font-weight: 600;
+      color: $text-primary;
+    }
+
+    .value {
+      flex: 1;
+      color: $text-secondary;
+    }
+  }
+
+  .detail-actions {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-color;
+  }
+}
+
+// 폼
+.form {
+  h4 {
+    margin-bottom: $spacing-md;
+    padding-bottom: $spacing-sm;
+    border-bottom: 1px solid $border-color;
+    color: $text-primary;
+
+    &:not(:first-child) {
+      margin-top: $spacing-xl;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-color;
+  }
+
+  textarea {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: $font-size-sm;
+    font-family: inherit;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+}
+
+// 리뷰 상세
+.review-detail {
+  .rating {
+    color: $warning-color;
+  }
+
+  .reply-form {
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-color;
+
+    h4 {
+      margin-bottom: $spacing-md;
+    }
+
+    textarea {
+      width: 100%;
+      margin-bottom: $spacing-md;
+    }
+  }
+}
+
+// 페이지네이션
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-top: $spacing-xl;
+
+  button {
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-color;
+    background: $bg-primary;
+    color: $text-primary;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: $transition-base;
+    font-size: $font-size-sm;
+
+    &:hover:not(:disabled) {
+      background: $bg-secondary;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.active {
+      background: $primary-color;
+      color: $text-white;
+      border-color: $primary-color;
+    }
+  }
+}
+
+// 필터
+.filter-bar {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+  flex-wrap: wrap;
+
+  .filter-group {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+
+    label {
+      font-size: $font-size-sm;
+      font-weight: 500;
+      color: $text-primary;
+    }
+
+    input,
+    select {
+      padding: $spacing-sm $spacing-md;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// 반응형
+@media (max-width: 768px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+
+    .filter-group {
+      width: 100%;
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: scroll;
+  }
+
+  .detail-section .detail-row {
+    flex-direction: column;
+
+    .label {
+      width: 100%;
+      margin-bottom: $spacing-xs;
+    }
+  }
+}
