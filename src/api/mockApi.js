@@ -219,6 +219,11 @@ export const mockStatsApi = {
     return createResponse({
       hotel: mockHotel,
       recentBookings: mockBookings,
+      chartData: {
+        labels: ["1월", "2월", "3월", "4월", "5월", "6월"],
+        revenue: [2000000, 2500000, 2200000, 2800000, 3000000, 3200000],
+        bookings: [45, 58, 52, 67, 72, 78],
+      },
     });
   },
 
