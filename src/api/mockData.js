@@ -180,15 +180,55 @@ export const mockStats = {
     bookings: 12,
     revenue: 4560000,
     cancellations: 2,
+    change: {
+      bookings: 0.08,
+      revenue: 0.12,
+    },
   },
   thisMonth: {
     bookings: 234,
     revenue: 78920000,
     cancellations: 15,
+    change: {
+      bookings: 0.06,
+      revenue: 0.09,
+      cancellations: -0.03,
+    },
   },
   thisYear: {
     bookings: 2456,
     revenue: 892340000,
     cancellations: 124,
+    change: {
+      bookings: 0.11,
+      revenue: 0.14,
+    },
+  },
+  occupancy: {
+    rate: 0.82,
+    adr: 210000,
+    revpar: 172000,
+    change: {
+      rate: 0.04,
+      adr: 0.03,
+      revpar: 0.05,
+    },
+  },
+  distribution: {
+    channels: [
+      { name: "직영 웹사이트", revenue: 42000000, share: 0.55 },
+      { name: "OTA", revenue: 25000000, share: 0.33 },
+      { name: "법인/단체", revenue: 8000000, share: 0.12 },
+    ],
+    roomTypes: [
+      { name: "디럭스 룸", revenue: 24000000, bookings: 120 },
+      { name: "스위트 룸", revenue: 32000000, bookings: 86 },
+      { name: "스탠다드 룸", revenue: 18000000, bookings: 150 },
+    ],
+  },
+  trendComparison: {
+    current: 35400000,
+    previous: 31600000,
+    yoyChange: 0.12,
   },
 };

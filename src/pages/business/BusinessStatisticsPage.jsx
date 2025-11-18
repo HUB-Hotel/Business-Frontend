@@ -1,104 +1,289 @@
 import { useState, useEffect } from "react";
 import { businessStatsApi } from "../../api/businessStatsApi";
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+  Line,
+} from "recharts";
+import Loader from "../../components/common/Loader";
+import ErrorMessage from "../../components/common/ErrorMessage";
+
+const PERIOD_OPTIONS = [
+  { value: "week", label: "주간" },
+  { value: "month", label: "월간" },
+  { value: "quarter", label: "분기" },
+  { value: "year", label: "연간" },
+];
 
 const BusinessStatisticsPage = () => {
   const [stats, setStats] = useState(null);
+  const [revenueTrend, setRevenueTrend] = useState(null);
+  const [period, setPeriod] = useState("month");
   const [loading, setLoading] = useState(true);
+  const [chartLoading, setChartLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchStats();
+    fetchRevenueTrend("month");
   }, []);
 
   const fetchStats = async () => {
     try {
+      setLoading(true);
       const data = await businessStatsApi.getStatistics();
       setStats(data);
-    } catch (error) {
-      console.error("Failed to fetch stats:", error);
+    } catch (err) {
+      setError(err.message || "통계를 불러오는데 실패했습니다.");
     } finally {
       setLoading(false);
     }
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("ko-KR", {
-      style: "currency",
-      currency: "KRW",
-    }).format(amount);
+  const fetchRevenueTrend = async (nextPeriod) => {
+    try {
+      setChartLoading(true);
+      setPeriod(nextPeriod);
+      const data = await businessStatsApi.getRevenueStats(nextPeriod);
+      setRevenueTrend(data);
+    } catch (err) {
+      setError(err.message || "매출 추이를 불러오는데 실패했습니다.");
+    } finally {
+      setChartLoading(false);
+    }
   };
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
+      maximumFractionDigits: 0,
+    }).format(amount || 0);
+
+  const formatPercent = (value) => {
+    if (value === undefined || value === null) return "-";
+    return `${(value * 100).toFixed(1)}%`;
+  };
+
+  const chartData =
+    revenueTrend?.labels.map((label, index) => ({
+      period: label,
+      revenue: revenueTrend.revenue?.[index] ?? 0,
+      bookings: revenueTrend.bookings?.[index] ?? 0,
+    })) || [];
+
+  if (loading && !stats) return <Loader fullScreen />;
+  if (error && !stats) return <ErrorMessage message={error} onRetry={fetchStats} />;
+
+  const summaryCards = stats
+    ? [
+        {
+          title: "오늘 매출",
+          value: formatCurrency(stats.today.revenue),
+          delta: stats.today.change?.revenue,
+        },
+        {
+          title: "오늘 예약",
+          value: `${stats.today.bookings}건`,
+          delta: stats.today.change?.bookings,
+        },
+        {
+          title: "이번 달 매출",
+          value: formatCurrency(stats.thisMonth.revenue),
+          delta: stats.thisMonth.change?.revenue,
+        },
+        {
+          title: "이번 달 취소율",
+          value: `${((stats.thisMonth.cancellations / stats.thisMonth.bookings) * 100).toFixed(1)}%`,
+          delta: stats.thisMonth.change?.cancellations,
+          invert: true,
+        },
+      ]
+    : [];
+
+  const totalMonthlyRevenue = stats?.thisMonth?.revenue || 1;
 
   return (
-    <div>
+    <div className="business-statistics-page">
       <div className="page-header">
         <div>
           <h1>매출 통계</h1>
-          <p>호텔 예약 및 매출 통계를 확인합니다</p>
+          <p>호텔 예약 및 매출 지표를 기간별로 확인합니다.</p>
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
+      <div className="stats-summary-grid">
+        {summaryCards.map((card) => (
+          <div className="summary-card" key={card.title}>
+            <div className="summary-card__header">
+              <p>{card.title}</p>
+              {card.delta !== undefined && (
+                <span className={`delta ${card.invert && card.delta < 0 ? "positive" : card.delta >= 0 ? "positive" : "negative"}`}>
+                  {card.delta >= 0 ? "+" : ""}
+                  {(card.delta * 100).toFixed(1)}%
+                </span>
+              )}
+            </div>
+            <p className="summary-card__value">{card.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="statistics-section card">
+        <div className="statistics-section__header">
+          <div>
+            <h2>매출 추이</h2>
+            <p>기간별 매출과 예약 수를 비교해 보세요.</p>
+          </div>
+          <div className="chart-filter-group">
+            {PERIOD_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`chart-filter-btn ${period === option.value ? "active" : ""}`}
+                onClick={() => fetchRevenueTrend(option.value)}
+                disabled={chartLoading && period === option.value}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {stats?.trendComparison && (
+          <div className="trend-summary">
+            <div>
+              <p className="label">이번 기간 매출</p>
+              <p className="value">{formatCurrency(stats.trendComparison.current)}</p>
+            </div>
+            <div>
+              <p className="label">전 기간</p>
+              <p className="value muted">{formatCurrency(stats.trendComparison.previous)}</p>
+            </div>
+            <div className={`trend-badge ${stats.trendComparison.yoyChange >= 0 ? "positive" : "negative"}`}>
+              {stats.trendComparison.yoyChange >= 0 ? "▲" : "▼"} {(stats.trendComparison.yoyChange * 100).toFixed(1)}% YoY
+            </div>
+          </div>
+        )}
+
+        <div className="chart-wrapper">
+          {chartLoading && (
+            <div className="chart-overlay">
+              <div className="chart-spinner" />
+            </div>
+          )}
+          <ResponsiveContainer width="100%" height={320}>
+            <ComposedChart data={chartData} margin={{ top: 10, right: 24, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis dataKey="period" tick={{ fill: "#6b7280" }} />
+              <YAxis
+                yAxisId="left"
+                tickFormatter={(value) => `${Math.round(value / 10000)}만`}
+                tick={{ fill: "#6b7280" }}
+              />
+              <YAxis yAxisId="right" orientation="right" tick={{ fill: "#6b7280" }} />
+              <Tooltip
+                formatter={(value, name) =>
+                  name === "매출" ? [`${formatCurrency(value)}원`, name] : [`${value}건`, name]
+                }
+              />
+              <Legend />
+              <Bar yAxisId="left" dataKey="revenue" name="매출" fill="#6366F1" radius={[4, 4, 0, 0]} maxBarSize={32} />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="bookings"
+                name="예약 수"
+                stroke="#F97316"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="statistics-grid">
         <div className="card">
           <div className="card__header">
-            <h3>오늘</h3>
+            <h3>점유율 & RevPAR</h3>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>예약 수</span>
-              <span style={{ fontWeight: "600" }}>{stats.today.bookings}건</span>
+          <div className="occupancy-grid">
+            <div>
+              <p className="label">점유율</p>
+              <p className="value">{formatPercent(stats?.occupancy?.rate)}</p>
+              <span className="delta positive">
+                {stats?.occupancy?.change?.rate !== undefined
+                  ? `+${(stats.occupancy.change.rate * 100).toFixed(1)}%`
+                  : "-"}
+              </span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>매출</span>
-              <span style={{ fontWeight: "600" }}>{formatCurrency(stats.today.revenue)}</span>
+            <div>
+              <p className="label">ADR</p>
+              <p className="value">{formatCurrency(stats?.occupancy?.adr)}</p>
+              <span className="delta positive">
+                {stats?.occupancy?.change?.adr !== undefined
+                  ? `+${(stats.occupancy.change.adr * 100).toFixed(1)}%`
+                  : "-"}
+              </span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>취소</span>
-              <span style={{ fontWeight: "600" }}>{stats.today.cancellations}건</span>
+            <div>
+              <p className="label">RevPAR</p>
+              <p className="value">{formatCurrency(stats?.occupancy?.revpar)}</p>
+              <span className="delta positive">
+                {stats?.occupancy?.change?.revpar !== undefined
+                  ? `+${(stats.occupancy.change.revpar * 100).toFixed(1)}%`
+                  : "-"}
+              </span>
             </div>
           </div>
         </div>
 
         <div className="card">
           <div className="card__header">
-            <h3>이번 달</h3>
+            <h3>판매 채널 비중</h3>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>예약 수</span>
-              <span style={{ fontWeight: "600" }}>{stats.thisMonth.bookings}건</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>매출</span>
-              <span style={{ fontWeight: "600" }}>{formatCurrency(stats.thisMonth.revenue)}</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>취소</span>
-              <span style={{ fontWeight: "600" }}>{stats.thisMonth.cancellations}건</span>
-            </div>
-          </div>
+          <ul className="distribution-list">
+            {stats?.distribution?.channels.map((channel) => (
+              <li key={channel.name}>
+                <div className="distribution-list__title">
+                  <span>{channel.name}</span>
+                  <span>{(channel.share * 100).toFixed(1)}%</span>
+                </div>
+                <div className="distribution-progress">
+                  <div style={{ width: `${channel.share * 100}%` }} />
+                </div>
+                <span className="value">{formatCurrency(channel.revenue)}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="card">
           <div className="card__header">
-            <h3>올해</h3>
+            <h3>객실 타입별 매출</h3>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>예약 수</span>
-              <span style={{ fontWeight: "600" }}>{stats.thisYear.bookings}건</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>매출</span>
-              <span style={{ fontWeight: "600" }}>{formatCurrency(stats.thisYear.revenue)}</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: "#64748b" }}>취소</span>
-              <span style={{ fontWeight: "600" }}>{stats.thisYear.cancellations}건</span>
-            </div>
-          </div>
+          <ul className="distribution-list">
+            {stats?.distribution?.roomTypes.map((room) => (
+              <li key={room.name}>
+                <div className="distribution-list__title">
+                  <span>{room.name}</span>
+                  <span>{room.bookings}건</span>
+                </div>
+                <div className="distribution-progress">
+                  <div style={{ width: `${(room.revenue / totalMonthlyRevenue) * 100}%` }} />
+                </div>
+                <span className="value">{formatCurrency(room.revenue)}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

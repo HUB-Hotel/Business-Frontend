@@ -277,10 +277,7 @@ export const mockStatsApi = {
 
   getRevenueStats: async (period) => {
     await delay();
-    return createResponse({
-      labels: ["1월", "2월", "3월", "4월", "5월", "6월"],
-      data: [2000000, 2500000, 2200000, 2800000, 3000000, 3200000],
-    });
+    return createResponse(getRevenueTrend(period || "month"));
   },
 
   getBookingStats: async (period) => {
@@ -298,4 +295,37 @@ export const mockStatsApi = {
       data: [65, 72, 68, 78, 82, 85],
     });
   },
+};
+
+const revenueTrendDatasets = {
+  week: {
+    labels: ["월", "화", "수", "목", "금", "토", "일"],
+    revenue: [5200000, 6100000, 5800000, 6400000, 7200000, 7800000, 6900000],
+    bookings: [65, 72, 68, 75, 88, 92, 81],
+  },
+  month: {
+    labels: ["1주차", "2주차", "3주차", "4주차"],
+    revenue: [14500000, 16800000, 18900000, 21000000],
+    bookings: [180, 195, 210, 230],
+  },
+  quarter: {
+    labels: ["Q1", "Q2", "Q3", "Q4"],
+    revenue: [70000000, 88000000, 92000000, 86000000],
+    bookings: [520, 610, 640, 590],
+  },
+  year: {
+    labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+    revenue: [32000000, 28000000, 26000000, 31000000, 34000000, 36000000, 38000000, 42000000, 40000000, 39000000, 37000000, 41000000],
+    bookings: [78, 72, 70, 80, 85, 88, 90, 95, 92, 89, 85, 91],
+  },
+};
+
+const getRevenueTrend = (period) => {
+  return (
+    revenueTrendDatasets[period] || revenueTrendDatasets.month || {
+      labels: [],
+      revenue: [],
+      bookings: [],
+    }
+  );
 };
