@@ -34,8 +34,8 @@ const BusinessSignupPage = () => {
     }
 
     // 비밀번호 길이 체크
-    if (formData.password.length < 8) {
-      setError("비밀번호는 8자 이상이어야 합니다.");
+    if (formData.password.length < 4) {
+      setError("비밀번호는 4자 이상이어야 합니다.");
       return;
     }
 
@@ -100,9 +100,9 @@ const BusinessSignupPage = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="enter your password... (8자 이상)"
+                placeholder="enter your password... (4자 이상)"
                 required
-                minLength={8}
+                minLength={4}
               />
             </div>
 
